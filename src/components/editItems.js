@@ -10,7 +10,7 @@ class EditItems extends React.Component{
     constructor(props){
         super(props)
         this.state=({
-            category:[],alert:false,alertmessage:'',catid:0,subcatid:0,productid:0,itemname:''
+            category:[],alert:false,alertmessage:'',catid:0,subcatid:0,productid:0,itemname:'',price:0
         })
     }
 
@@ -32,9 +32,12 @@ class EditItems extends React.Component{
     setName(event){
         this.setState({itemname:event.target.value})
     }
+    setMoney(event){
+        this.setState({price:event.target.value})
+    }
     async submitform(){
-        if(this.state.productid!==0 && this.state.itemname.length>0){
-            let params={'name':this.state.itemname,'product':this.state.productid}
+        if(this.state.productid!==0 && this.state.itemname.length>0 && this.state.price!==0){
+            let params={'name':this.state.itemname,'product':this.state.productid,'price':this.state.price}
             const resp=await loadData(params,'newItem',false)
             if(resp.status!==200){
                 this.setState({alert:true,alertmessage:"cannot connect to the server"})
@@ -134,7 +137,10 @@ class EditItems extends React.Component{
                     </Select>
                 </FormControl>
                 <br></br><br></br>
-                <TextField onChange={this.setName.bind(this)} label="Item Name" variant="outlined" className="w-100 whitebg"/><br></br>
+                <div className="flex">
+                <TextField onChange={this.setName.bind(this)} label="Item Name" variant="outlined" className="w-100 whitebg marginrit"/><TextField type="number" onChange={this.setMoney.bind(this)} label="money" variant="outlined" className="whitebg"/><br></br>
+                
+                </div>
                 <br></br>
                         <Button onClick={this.submitform.bind(this)} variant="contained" color="primary" disableElevation className="active morepadding w-100"  size="large">SUBMIT</Button>
         </div>
